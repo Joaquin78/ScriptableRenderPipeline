@@ -19,7 +19,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
         readonly RenderPipelineResources m_Resources;
         bool m_ResetHistory;
         Material m_FinalPassMaterial;
-        Material m_GuardBandClearMaterial;
+        Material m_ClearBlackMaterial;
 
         // Exposure data
         const int k_ExposureCurvePrecision = 128;
@@ -93,7 +93,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
         {
             m_Resources = hdAsset.renderPipelineResources;
             m_FinalPassMaterial = CoreUtils.CreateEngineMaterial(m_Resources.shaders.finalPassPS);
-            m_GuardBandClearMaterial = CoreUtils.CreateEngineMaterial(m_Resources.shaders.guardBandClearPS);
+            m_ClearBlackMaterial = CoreUtils.CreateEngineMaterial(m_Resources.shaders.clearBlackPS);
 
             // Some compute shaders fail on specific hardware or vendors so we'll have to use a
             // safer but slower code path for them
@@ -176,7 +176,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             CoreUtils.Destroy(m_InternalSpectralLut);
             RTHandles.Release(m_InternalLogLut);
             CoreUtils.Destroy(m_FinalPassMaterial);
-            CoreUtils.Destroy(m_GuardBandClearMaterial);
+            CoreUtils.Destroy(m_ClearBlackMaterial);
             CoreUtils.SafeRelease(m_BokehNearKernel);
             CoreUtils.SafeRelease(m_BokehFarKernel);
             CoreUtils.SafeRelease(m_BokehIndirectCmd);
@@ -190,7 +190,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             m_InternalSpectralLut       = null;
             m_InternalLogLut            = null;
             m_FinalPassMaterial         = null;
-            m_GuardBandClearMaterial    = null;
+            m_ClearBlackMaterial    = null;
             m_BokehNearKernel           = null;
             m_BokehFarKernel            = null;
             m_BokehIndirectCmd          = null;
@@ -288,9 +288,9 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
                         if (w < source.rt.width || h < source.rt.height)
                         {
                             cmd.SetViewport(new Rect(w, 0, k_RTGuardBandSize, h));
-                            cmd.DrawProcedural(Matrix4x4.identity, m_GuardBandClearMaterial, 0, MeshTopology.Triangles, 3, 1);
+                            cmd.DrawProcedural(Matrix4x4.identity, m_ClearBlackMaterial, 0, MeshTopology.Triangles, 3, 1);
                             cmd.SetViewport(new Rect(0, h, w + k_RTGuardBandSize, k_RTGuardBandSize));
-                            cmd.DrawProcedural(Matrix4x4.identity, m_GuardBandClearMaterial, 0, MeshTopology.Triangles, 3, 1);
+                            cmd.DrawProcedural(Matrix4x4.identity, m_ClearBlackMaterial, 0, MeshTopology.Triangles, 3, 1);
                         }
                     }
 

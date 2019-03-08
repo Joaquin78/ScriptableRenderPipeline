@@ -1,4 +1,4 @@
-Shader "Hidden/HDRP/GuardBandClear"
+Shader "Hidden/HDRP/ClearBlack"
 {
     HLSLINCLUDE
         #pragma target 4.5

@@ -127,7 +127,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             public ComputeShader bloomUpsampleCS;
             public ComputeShader FXAACS;
             public Shader finalPassPS;
-            public Shader guardBandClearPS;
+            public Shader clearBlackPS;
 
 #if ENABLE_RAYTRACING
             // Raytracing shaders
@@ -316,7 +316,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
                 bloomUpsampleCS = Load<ComputeShader>(HDRenderPipelinePath + "PostProcessing/Shaders/BloomUpsample.compute"),
                 FXAACS = Load<ComputeShader>(HDRenderPipelinePath + "PostProcessing/Shaders/FXAA.compute"),
                 finalPassPS = Load<Shader>(HDRenderPipelinePath + "PostProcessing/Shaders/FinalPass.shader"),
-                guardBandClearPS = Load<Shader>(HDRenderPipelinePath + "PostProcessing/Shaders/GuardBandClear.shader"),
+                clearBlackPS = Load<Shader>(HDRenderPipelinePath + "PostProcessing/Shaders/ClearBlack.shader"),
 
 #if ENABLE_RAYTRACING
                 aoRaytracing = Load<RaytracingShader>(HDRenderPipelinePath + "RenderPipeline/Raytracing/Shaders/RaytracingAmbientOcclusion.raytrace"),
